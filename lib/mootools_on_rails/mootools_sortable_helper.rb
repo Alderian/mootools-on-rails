@@ -1,6 +1,48 @@
 module ActionView
   module Helpers
     module MootoolsSortableHelper
+
+# sortable_element('sortable_list', { :url => {:action => :update_positions} })
+
+      # sortable_element(container, options)
+      #
+      # NOT a full implimentation
+      def sortable_element(container, sortable_options = {})
+        if container.any?
+          
+          sortable_options.merge!(
+            :snap=>4,
+            :revert=>{:duration=>100},
+            :higlight_color=>'#F3F865',
+            :clone=> 'true',
+            :constrain => 'true'
+            )   
+            
+            sortable_options[:url] = url_for(sortable_options[:url]) if sortable_options[:url].is_a?(Hash)
+          
+            js = "var sortable = new Sortables('#{container}',{
+            snap: #{sortable_options[:snap]},
+            revert: {duration:#{sortable_options[:revert][:duration]}},
+            clone: #{sortable_options[:clone]},
+            constrain: #{sortable_options[:constrain]},
+            onComplete: function(el) {
+              changes='_method=put&'+sortable.serialize(false, function(element, index){
+                  return '#{container}[]='+element.getProperty('id').replace('item_','');
+              }).join('&');
+              
+              changes += '&#{request_forgery_protection_token}=' + encodeURIComponent(\'#{escape_javascript(form_authenticity_token)}\');
+              
+              var myRequest = new Request({url: '#{sortable_options[:url]}',method: 'post'}).send(changes);
+              el.highlight('#{sortable_options[:higlight_color]}');
+            	}}
+            );\n"
+          javascript_tag(dom_ready(js))
+        else
+          ""
+        end
+      end
+      
+      
       #
       # sortable_table(@collection,table_dom_id)
       #
