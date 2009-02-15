@@ -19,8 +19,8 @@ module ActionView
 
 
 
-          js = "var rows = $('#{table_dom_id}').getElements('tbody');\n"
-          js << "rows.getElements('tr').each(function(el){el.addClass('draggable');});\n"
+          js = "var rows = $('#{table_dom_id}').getElements('tbody');"
+          js << "rows.getElements('tr').each(function(el){el.addClass('draggable');});"
           js << "var sortable = new Sortables(rows,{
           snap: #{sortable_options[:snap]},
           revert: {duration:#{sortable_options[:revert][:duration]}},
@@ -29,7 +29,7 @@ module ActionView
             var myRequest = new Request({url: '#{sortable_options[:url]}',method: 'post'}).send(changes);
             el.highlight('#{sortable_options[:higlight_color]}');
           	}}
-          );\n"
+          );"
           javascript_tag(dom_ready(js))
         else
           ""
