@@ -62,8 +62,7 @@ class MootoolsHelperTest < Test::Unit::TestCase
   end
         
   def test_insert_html
-    #a_paragraph = "\\u003Cp\\u003EA paragraph\\u003C/p\\u003E";
-    a_paragraph = "<p>A paragraph</p>";
+    a_paragraph = "\\u003Cp\\u003EA paragraph\\u003C/p\\u003E";
     [:top, :bottom, :before, :after].each do |position|
       assert_equal "$('my-id').append#{position.to_s.capitalize}(\"#{a_paragraph}\");",
         @generator.insert_html(position, 'my-id', '<p>A paragraph</p>')
@@ -71,14 +70,13 @@ class MootoolsHelperTest < Test::Unit::TestCase
   end
   
   def test_replace_html
-    #a_paragraph = "\\u003Cp\\u003EA paragraph\\u003C/p\\u003E";
-    a_paragraph = "<p>A paragraph</p>";
+    a_paragraph = "\\u003Cp\\u003EA paragraph\\u003C/p\\u003E";
     assert_equal "$('my-id').set({\"html\": \"#{a_paragraph}\"});",
       @generator.replace_html('my-id', '<p>A paragraph</p>')
   end
   
   def test_replace
-    a_paragraph = "<p>A paragraph</p>";
+    a_paragraph = "\\u003Cp\\u003EA paragraph\\u003C/p\\u003E"
     assert_equal "$('my-id').replace(\"#{a_paragraph}\");",
       @generator.replace('my-id', '<p>A paragraph</p>')
   end      
